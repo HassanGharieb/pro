@@ -1,18 +1,19 @@
 <template>
   <div class="creat">
     <h1>This is an Create page</h1>
-    <form   @submit.prevent="validateform">
-     <div  class="error-list" >
-         <div class="error" v-for="error in formerrrors" :key="error" >{{error}}</div>
-     </div>
-  
-        
+    <form @submit.prevent="validateform">
+      <div class="error-list">
+        <div class="error" v-for="error in formerrrors" :key="error">
+          {{ error }}
+        </div>
+      </div>
+
       <label>Name</label>
-      <input type="text" v-model="name"/>
+      <input type="text" v-model="name" />
 
       <br />
       <label>Dev</label>
-      <select v-model="dev" >
+      <select v-model="dev" @change="filter($event)">
         <option
           :value="devision"
           v-for="(devision, index) in devisions"
@@ -25,21 +26,13 @@
       <br />
       <label>Grade</label>
       <select v-model="gra">
-        <option
-          :value="grad"
-        
-          v-for="(grad, index) in grade1"
-          :key="index"
-          
-        >
+        <option :value="grad" v-for="(grad, index) in grade1" :key="index">
           {{ grad.name }}
         </option>
-        
       </select>
       <br />
-    <input type="submit" value="Submit"> 
+      <input type="submit" value="Submit" />
     </form>
-    
   </div>
 </template>
 
@@ -50,8 +43,10 @@ export default {
   data: function () {
     return {
       devisions: [{id:1,name:"dev1"}, {id:2,name:"dev2"}],
-      grade1: [{id:1,name:"a1"},{id:2,name:"a2"}, {id:3,name:"a3"}, {id:4,name:"a4"},{id:5,name:"a5"}, {id:6,name:"a6"}],
-      grade2: [{id:1,name:"b1"},{id:2,name:"b2"}, {id:3,name:"b3"}, {id:4,name:"b4"},{id:5,name:"b5"}, {id:6,name:"b6"}],
+      grade1: [{id:1,name:"a1",devision_id:1},{id:2,name:"a2",devision_id:1},
+       {id:3,name:"a3",devision_id:1},
+       {id:4,name:"a4",devision_id:2},{id:5,name:"a5",devision_id:2}, {id:6,name:"a6",devision_id:2}],
+      arr:[],
       formerrrors: [],
       dev: null,
       gra: null,
@@ -84,10 +79,20 @@ export default {
       
 
             e.preventDefault();
+    },
+    filter(event){
+       console.log(event.target.value[0])
     }
+  
+  },
+  watch:{
+  dev(val) {
+       var dev=val.id;
+       this.arr=this.grade1.filter(el=>el.devision_id===dev)
+        }‏
   }
 
-};
+}
 </script>
 <style scoped lang="scss">
 select {
